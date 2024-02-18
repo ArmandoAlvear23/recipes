@@ -49,4 +49,32 @@ router.put("/", async (req, res) => {
   }
 });
 
+// Get array of IDs from saved recipes using userID
+router.get("/savedRecipes/ids", async (req, res) => {
+  try {
+    // Get user document from database using userID
+    const user = await UserModel.findById(req.body.userID);
+    // Return savedRecipe IDs
+    res.json({ savedRecipes: user?.savedRecipes });
+  } catch (err) {
+    res.json(err);
+  }
+});
+
+// Get saved recipe documents from userID
+router.get("/savedRecipes", async (req, res) => {
+  try {
+    // Get user document using userID
+    const user = await UserModel.findById(req.body.userID);
+    //Get saved recipes document array using recipe ids found in user document
+    const savedRecipes = await RecipeModel.find({
+      _id: { $in: user.savedRecipes },
+    });
+    // Return savedRecipes documents
+    res.json({ savedRecipes });
+  } catch (err) {
+    res.json(err);
+  }
+});
+
 export { router as recipesRouter };
