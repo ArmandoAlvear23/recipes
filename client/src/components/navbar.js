@@ -3,12 +3,18 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
-  const [cookies, setCookies] = useCookies(["access_token"]);
+  const [cookies, removeCookies] = useCookies(["access_token"]);
   const navigate = useNavigate();
 
+  // Logout function
   const logout = () => {
-    setCookies("access_token", "");
+    // Remove access_token cookie
+    removeCookies("access_token");
+
+    // Remove userID from local storage
     window.localStorage.removeItem("userID");
+
+    // Navigate to the /auth page
     navigate("/auth");
   };
 
