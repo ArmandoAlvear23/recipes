@@ -3,8 +3,9 @@ import cors from "cors";
 import mongoose from "mongoose";
 import "./loadEnv.js";
 
-// Import user router
+// Import routers
 import { userRouter } from "./routes/users.js";
+import { recipesRouter } from "./routes/recipes.js";
 
 const app = express();
 
@@ -14,8 +15,9 @@ app.use(express.json());
 // Allows the front-end client to make requests to the back-end server
 app.use(cors());
 
-// Route auth endpoint to user router
+// Route endpoints to routers
 app.use("/auth", userRouter);
+app.use("/recipes", recipesRouter);
 
 // Connect to mongodb database
 mongoose.connect(process.env.MONGODB_STRING);
