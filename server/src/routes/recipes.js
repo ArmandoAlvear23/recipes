@@ -37,7 +37,7 @@ router.put("/", async (req, res) => {
     // Get recipe from database using recipe ID
     const recipe = await RecipeModel.findById(req.body.recipeID);
     // Get user from database using user ID
-    const user = await UserModel.findByID(req.body.userID);
+    const user = await UserModel.findById(req.body.userID);
     // Add recipe to user
     user.savedRecipes.push(recipe);
     // Save new recipe to user in database
