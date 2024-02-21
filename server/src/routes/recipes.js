@@ -25,7 +25,7 @@ router.post("/", async (req, res) => {
   try {
     // Save new recipe to database
     await newRecipe.save();
-    res.json(recipe);
+    res.json(newRecipe);
   } catch (err) {
     res.json(err);
   }
