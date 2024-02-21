@@ -70,7 +70,7 @@ router.get("/savedRecipes", async (req, res) => {
     const savedRecipes = await RecipeModel.find({
       _id: { $in: user.savedRecipes },
     });
-    // Return savedRecipes documents
+    // Return savedRecipes documents saved by users
     res.json({ savedRecipes });
   } catch (err) {
     res.json(err);
