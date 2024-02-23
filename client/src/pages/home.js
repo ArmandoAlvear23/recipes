@@ -14,7 +14,6 @@ export const Home = () => {
       try {
         const response = await axios.get("http://localhost:3001/recipes");
         setRecipes(response.data);
-        console.log(response.data);
       } catch (err) {
         console.error(err);
       }
@@ -27,14 +26,13 @@ export const Home = () => {
           { headers: { authorization: cookies.access_token } }
         );
         setSavedRecipes(response.data.savedRecipes);
-        console.log(response.data);
       } catch (err) {
         console.error(err);
       }
     };
 
     fetchRecipe();
-    fetchSavedRecipe();
+    if (cookies.access_token) fetchSavedRecipe();
   }, []);
 
   const saveRecipe = async (recipeID) => {
@@ -48,7 +46,6 @@ export const Home = () => {
         { headers: { authorization: cookies.access_token } }
       );
       setSavedRecipes(response.data.savedRecipes);
-      console.log(response);
     } catch (err) {
       console.error(err);
     }
