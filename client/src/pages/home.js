@@ -4,6 +4,7 @@ import { useGetUserID } from "../hooks/useGetUserID.js";
 
 export const Home = () => {
   const [recipes, setRecipes] = useState([]);
+  const [savedRecipes, setSavedRecipes] = useState([]);
 
   const userID = useGetUserID();
 
@@ -17,7 +18,21 @@ export const Home = () => {
         console.error(err);
       }
     };
+
+    const fetchSavedRecipe = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3001/recipes/savedRecipes/ids/${userID}`
+        );
+        setSavedRecipes(response.data.savedRecipes);
+        console.log(response.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
     fetchRecipe();
+    fetchSavedRecipe();
   }, []);
 
   const saveRecipe = async (recipeID) => {
@@ -26,11 +41,14 @@ export const Home = () => {
         recipeID,
         userID,
       });
+      setSavedRecipes(response.data.savedRecipes);
       console.log(response);
     } catch (err) {
       console.error(err);
     }
   };
+
+  const isSavedRecipe = (id) => savedRecipes.includes(id);
 
   return (
     <div>
@@ -40,7 +58,12 @@ export const Home = () => {
           <li key={recipe._id}>
             <div>
               <h2>{recipe.name}</h2>
-              <button onClick={() => saveRecipe(recipe._id)}>Save</button>
+              <button
+                onClick={() => saveRecipe(recipe._id)}
+                disabled={isSavedRecipe(recipe._id)}
+              >
+                {isSavedRecipe(recipe._id) ? "Saved" : "Save"}
+              </button>
             </div>
             <div className="instructions">
               <p>{recipe.instructions}</p>
