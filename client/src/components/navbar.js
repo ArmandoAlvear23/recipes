@@ -3,7 +3,7 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
-  const [cookies, removeCookies] = useCookies(["access_token"]);
+  const [cookies, _, removeCookies] = useCookies(["access_token"]);
   const navigate = useNavigate();
 
   // Logout function
@@ -22,11 +22,13 @@ export const Navbar = () => {
     <div className="navbar">
       <Link to="/">Home</Link>
       <Link to="/create-recipe">Create Recipe</Link>
-      <Link to="/saved-recipes">Saved Recipes</Link>
       {!cookies.access_token ? (
         <Link to="/auth">Login/Register</Link>
       ) : (
-        <button onClick={logout}>Logout</button>
+        <>
+          <Link to="/saved-recipes">Saved Recipes</Link>
+          <button onClick={logout}>Logout</button>
+        </>
       )}
     </div>
   );
