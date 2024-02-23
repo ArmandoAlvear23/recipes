@@ -61,3 +61,23 @@ router.post("/login", async (req, res) => {
 
 // Export user router
 export { router as userRouter };
+
+// Verify JSON web token middleware
+export const verifyToken = (req, res, next) => {
+  // Get token from header
+  const token = req.headers.authorization;
+
+  // If token is present
+  if (token) {
+    // Verify JSON web token
+    jwt.verify(token, process.env.JWT_SECRET, (err) => {
+      // Token is not verified
+      if (err) return res.sendStatus(403);
+      // Token is verfied, proceed
+      next();
+    });
+  } else {
+    // Token not found in header
+    res.sendStatus(401);
+  }
+};
