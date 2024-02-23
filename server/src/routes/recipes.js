@@ -62,10 +62,10 @@ router.get("/savedRecipes/ids/:userID", async (req, res) => {
 });
 
 // Get saved recipe documents from userID
-router.get("/savedRecipes", async (req, res) => {
+router.get("/savedRecipes/:userID", async (req, res) => {
   try {
     // Get user document using userID
-    const user = await UserModel.findById(req.body.userID);
+    const user = await UserModel.findById(req.params.userID);
     //Get saved recipes document array using recipe ids found in user document
     const savedRecipes = await RecipeModel.find({
       _id: { $in: user.savedRecipes },
