@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import { RecipeModel } from "../models/Recipes.js";
 import { UserModel } from "../models/Users.js";
+import { verifyToken } from "./users.js";
 
 const router = express.Router();
 
@@ -18,7 +19,7 @@ router.get("/", async (req, res) => {
 });
 
 // Create a new recipe
-router.post("/", async (req, res) => {
+router.post("/", verifyToken, async (req, res) => {
   // Create new recipe from request
   const newRecipe = new RecipeModel(req.body);
 
@@ -32,7 +33,7 @@ router.post("/", async (req, res) => {
 });
 
 // Save recipe to user profile
-router.put("/", async (req, res) => {
+router.put("/", verifyToken, async (req, res) => {
   try {
     // Get recipe from database using recipe ID
     const recipe = await RecipeModel.findById(req.body.recipeID);
@@ -50,7 +51,7 @@ router.put("/", async (req, res) => {
 });
 
 // Get array of IDs from saved recipes using userID
-router.get("/savedRecipes/ids/:userID", async (req, res) => {
+router.get("/savedRecipes/ids/:userID", verifyToken, async (req, res) => {
   try {
     // Get user document from database using userID
     const user = await UserModel.findById(req.params.userID);
@@ -62,7 +63,7 @@ router.get("/savedRecipes/ids/:userID", async (req, res) => {
 });
 
 // Get saved recipe documents from userID
-router.get("/savedRecipes/:userID", async (req, res) => {
+router.get("/savedRecipes/:userID", verifyToken, async (req, res) => {
   try {
     // Get user document using userID
     const user = await UserModel.findById(req.params.userID);
