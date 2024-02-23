@@ -1,11 +1,15 @@
 import { useState } from "react";
 import axios from "axios";
+import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { useGetUserID } from "../hooks/useGetUserID.js";
 
 export const CreateRecipe = () => {
   // Get user ID
   const userID = useGetUserID();
+
+  // Get cookies
+  const [cookies, _] = useCookies(["access_token"]);
 
   // Navigate hook
   const navigate = useNavigate();
@@ -51,7 +55,9 @@ export const CreateRecipe = () => {
     event.preventDefault();
     try {
       // Send post request to add recipe
-      await axios.post("http://localhost:3001/recipes", recipe);
+      await axios.post("http://localhost:3001/recipes", recipe, {
+        headers: { authorization: cookies.access_token },
+      });
       // Navigate to home page
       navigate("/");
     } catch (err) {
